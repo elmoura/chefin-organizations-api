@@ -1,0 +1,25 @@
+service: organizations-api
+
+plugins:
+  - serverless-offline
+  - serverless-tscpaths
+  - serverless-plugin-typescript
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  region: 'us-east-1'
+
+functions:
+  createOrganization:
+    handler: src/modules/organizations/presentation/create-organization-handler.handler
+    events:
+      - http:
+          method: POST
+          path: /organizations
+
+custom:
+  tscpaths:
+    buildPath: .build
+    tsconfigPath: tsconfig.json
