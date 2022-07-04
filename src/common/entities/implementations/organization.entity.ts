@@ -18,7 +18,7 @@ export class Organization extends BaseEntity implements IOrganization {
   @Column()
   name: string;
 
-  @OneToOne('UserEntity')
+  @OneToOne('User')
   organizationRepresentantId: string;
 
   businessSegment: string;

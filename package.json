@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "serverless offline --r tsconfig-paths/register",
     "build": "tsc build",
-    "typeorm": "typeorm-ts-node-esm"
+    "typeorm": "typeorm-ts-node-commonjs -d orm-config.ts"
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",

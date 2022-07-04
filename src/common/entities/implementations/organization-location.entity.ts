@@ -8,7 +8,7 @@ export class OrganizationLocation
   implements IOrganizationLocation
 {
   @Column()
-  @ManyToOne('OrganizationEntity')
+  @ManyToOne('Organization')
   organizationId: string;
 
   @Column()
