@@ -19,6 +19,13 @@ functions:
           method: POST
           path: /organizations
 
+  createUser:
+    handler: src/modules/users/presentation/create-user-handler.handler
+    events:
+      - http:
+          method: POST
+          path: /organizations/users
+
 custom:
   tscpaths:
     buildPath: .build

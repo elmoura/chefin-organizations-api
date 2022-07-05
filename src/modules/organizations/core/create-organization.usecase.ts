@@ -58,14 +58,16 @@ export class CreateOrganizationUseCase
       organizationId,
     });
 
+    const organizationRepresentantId = createdUser.userId;
     await this.organizationDataSource.updateOne(organizationId, {
-      organizationRepresentantId: createdUser.userId,
+      organizationRepresentantId,
     });
 
     return {
       ...createdOrganization,
-      user: createdUser,
+      organizationRepresentantId,
       locations,
+      user: createdUser,
     };
   }
 }

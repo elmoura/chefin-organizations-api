@@ -15,6 +15,7 @@ export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const dependenciesContainer = await setupContainer();
+
   const createUserUseCase = dependenciesContainer.get<CreateUserUseCase>(
     CREATE_USER_USE_CASE_PROVIDER
   );
