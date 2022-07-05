@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { DataSource } from 'typeorm';
-import { configuration } from '../config/vars';
+import { configuration } from '../../config/vars';
 
 const entitiesPattern = join(
   process.cwd(),

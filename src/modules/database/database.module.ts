@@ -1,5 +1,5 @@
-import { AsyncContainerModule, interfaces } from 'inversify';
 import { DataSource } from 'typeorm';
+import { AsyncContainerModule, interfaces } from 'inversify';
 import { getDatabaseConnection } from './get-database-connection';
 
 export const DATASOURCE_PROVIDER = 'PostgresDataSource';

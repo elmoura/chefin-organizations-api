@@ -32,6 +32,5 @@ export class Organization extends CustomBaseEntity implements IOrganization {
     (location) => location.organizationId,
     { eager: true }
   )
-  @JoinColumn({ name: 'organizationId' })
   locations: IOrganizationLocation[];
 }

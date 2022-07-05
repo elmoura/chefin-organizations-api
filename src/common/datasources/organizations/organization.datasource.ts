@@ -1,6 +1,6 @@
-import { DATASOURCE_PROVIDER } from '@src/database/database.module';
 import { inject, injectable } from 'inversify';
 import { DataSource, Repository } from 'typeorm';
+import { DATASOURCE_PROVIDER } from '@modules/database/database.module';
 import { Organization } from '../../entities/organization.entity';
 import { IOrganizationDataSource } from './types/organization-datasource.interface';
 
@@ -28,7 +28,7 @@ export class OrganizationDataSource implements IOrganizationDataSource {
   ): Promise<Partial<Organization>> {
     return this.organizationRepository.save({
       ...payload,
-      id: organizationId,
+      organizationId,
     });
   }
 }

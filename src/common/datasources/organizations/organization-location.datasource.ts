@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { DataSource, Repository } from 'typeorm';
-import { DATASOURCE_PROVIDER } from '@src/database/database.module';
+import { DATASOURCE_PROVIDER } from '@modules/database/database.module';
 import { ICustomBaseEntity } from '@common/entities/interfaces/custom-base-entity';
 import { IOrganizationLocation } from '@common/entities/interfaces/organization-location';
 import { OrganizationLocation } from '@common/entities/organization-location.entity';

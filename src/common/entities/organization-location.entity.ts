@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { IOrganizationLocation } from './interfaces/organization-location';
 import { CustomBaseEntity } from './custom-base-entity';
+// eslint-disable-next-line import/no-cycle
+import { Organization } from './organization.entity';
 
 @Entity()
 export class OrganizationLocation
@@ -17,7 +19,7 @@ export class OrganizationLocation
   locationId: string;
 
   @Column({ nullable: true })
-  @ManyToOne('Organization')
+  @ManyToOne(() => Organization)
   @JoinColumn({ name: 'organizationId' })
   organizationId: string;
 

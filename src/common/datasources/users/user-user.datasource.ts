@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { DataSource, Repository } from 'typeorm';
 import { IUser } from '@common/entities/interfaces/user';
 import { User } from '@common/entities/user.entity';
-import { DATASOURCE_PROVIDER } from '@src/database/database.module';
+import { DATASOURCE_PROVIDER } from '@modules/database/database.module';
 import {
   IUserDataSource,
   IUserLoginParams,
@@ -22,7 +22,7 @@ export class UserDataSource implements IUserDataSource {
 
   async findById(userId: string): Promise<IUser | null> {
     return this.userRepository.findOne({
-      where: { id: userId },
+      where: { userId },
     });
   }
 

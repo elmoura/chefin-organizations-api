@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
-import { organizationsModule } from '@modules/organizations/organizations.module';
 import { usersModule } from '@modules/users/users.module';
+import { databaseModule } from '@modules/database/database.module';
+import { organizationsModule } from '@modules/organizations/organizations.module';
 import {
   IOrganizationLocationDataSource,
   ORGANIZATION_LOCATION_DATASOURCE_PROVIDER,
@@ -17,7 +18,6 @@ import {
   IUserDataSource,
   USER_DATASOURCE_PROVIDER,
 } from './common/datasources/users/types/user-datasouce.interface';
-import { databaseModule } from './database/database.module';
 
 export const setupContainer = async (
   container = new Container()
