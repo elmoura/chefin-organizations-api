@@ -1,9 +1,9 @@
 service: organizations-api
 
 plugins:
-  - serverless-offline
-  - serverless-tscpaths
   - serverless-plugin-typescript
+  - serverless-tscpaths
+  - serverless-offline
 
 provider:
   name: aws

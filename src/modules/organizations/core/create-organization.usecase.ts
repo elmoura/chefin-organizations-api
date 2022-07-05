@@ -3,15 +3,14 @@ import { IBaseUseCase } from '@common/utils/base-use-case';
 import {
   IOrganizationDataSource,
   ORGANIZATION_DATASOURCE_PROVIDER,
-} from '@common/datasources/organizations/types/organization-datasouce.interface';
-import {
-  IUserDataSource,
-  USER_DATASOURCE_PROVIDER,
-} from '@common/datasources/users/types/user-datasouce.interface';
+} from '@common/datasources/organizations/types/organization-datasource.interface';
+import {} from '@common/datasources/users/types/user-datasouce.interface';
 import {
   CreateUserUseCase,
   CREATE_USER_USE_CASE_PROVIDER,
 } from '@modules/users/core/create-user.usecase';
+import { ORGANIZATION_LOCATION_DATASOURCE_PROVIDER } from '@common/datasources/organizations/types/organization-location-datasource';
+import { OrganizationLocationDataSource } from '@common/datasources/organizations/organization-location.datasource';
 import { CreateOrganizationInput } from '../models/create-organization-input';
 import { CreateOrganizationOutput } from '../models/create-organization-output';
 
@@ -26,7 +25,9 @@ export class CreateOrganizationUseCase
     @inject(CREATE_USER_USE_CASE_PROVIDER)
     private createUserUseCase: CreateUserUseCase,
     @inject(ORGANIZATION_DATASOURCE_PROVIDER)
-    private organizationDataSource: IOrganizationDataSource
+    private organizationDataSource: IOrganizationDataSource,
+    @inject(ORGANIZATION_LOCATION_DATASOURCE_PROVIDER)
+    private organizationLocationDataSource: OrganizationLocationDataSource
   ) {}
 
   /**
@@ -44,18 +45,27 @@ export class CreateOrganizationUseCase
       organizationPayload
     );
 
+    const { organizationId } = createdOrganization;
+
+    const locations =
+      await this.organizationLocationDataSource.saveManyForOrganization(
+        organizationId,
+        payload.locations
+      );
+
     const createdUser = await this.createUserUseCase.execute({
       ...payload.user,
-      organizationId: createdOrganization.id,
+      organizationId,
     });
 
-    await this.organizationDataSource.updateOne(createdOrganization.id, {
-      organizationRepresentantId: createdUser.id,
+    await this.organizationDataSource.updateOne(organizationId, {
+      organizationRepresentantId: createdUser.userId,
     });
 
     return {
       ...createdOrganization,
       user: createdUser,
+      locations,
     };
   }
 }

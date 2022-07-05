@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import PostgresDataSource from './postgres-datasource';
+import { PostgresDataSource } from './postgres-datasource';
 
 export const getDatabaseConnection = async (): Promise<DataSource> => {
   const alreadyConnected = PostgresDataSource.isInitialized;

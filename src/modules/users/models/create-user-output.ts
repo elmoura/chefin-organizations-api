@@ -1,7 +1,7 @@
 import { IUser } from '@common/entities/interfaces/user';
 
 export class CreateUserOutput implements IUser {
-  id: string;
+  userId: string;
 
   organizationId: string;
 

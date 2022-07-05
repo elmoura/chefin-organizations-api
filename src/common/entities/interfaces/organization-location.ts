@@ -1,6 +1,8 @@
-import { IBaseEntity } from './base-entity';
+import { ICustomBaseEntity } from './custom-base-entity';
 
-export interface IOrganizationLocation extends IBaseEntity {
+export interface IOrganizationLocation extends ICustomBaseEntity {
+  locationId: string;
+
   locationName: string;
 
   city: string;
@@ -14,4 +16,6 @@ export interface IOrganizationLocation extends IBaseEntity {
   number: string;
 
   complement: string;
+
+  postalCode: string;
 }

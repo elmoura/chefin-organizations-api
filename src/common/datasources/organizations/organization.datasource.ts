@@ -1,8 +1,8 @@
 import { DATASOURCE_PROVIDER } from '@src/database/database.module';
 import { inject, injectable } from 'inversify';
 import { DataSource, Repository } from 'typeorm';
-import { Organization } from '../../entities/implementations/organization.entity';
-import { IOrganizationDataSource } from './types/organization-datasouce.interface';
+import { Organization } from '../../entities/organization.entity';
+import { IOrganizationDataSource } from './types/organization-datasource.interface';
 
 @injectable()
 export class OrganizationDataSource implements IOrganizationDataSource {
@@ -14,7 +14,7 @@ export class OrganizationDataSource implements IOrganizationDataSource {
 
   async findById(organizationId: string): Promise<Organization | null> {
     return this.organizationRepository.findOne({
-      where: { id: organizationId },
+      where: { organizationId },
     });
   }
 

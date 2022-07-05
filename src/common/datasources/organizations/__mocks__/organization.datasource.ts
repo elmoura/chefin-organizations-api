@@ -1,9 +1,9 @@
 import { injectable } from 'inversify';
-import { Organization } from '../../../entities/implementations/organization.entity';
-import { IOrganizationDataSource } from '../types/organization-datasouce.interface';
+import { Organization } from '@common/entities/organization.entity';
+import { IOrganizationDataSource } from '../types/organization-datasource.interface';
 
 export const MOCKED_ORGANIZATION: Organization = {
-  id: 'mocked_id',
+  organizationId: 'mocked_id',
   name: 'Cazé Lanches',
   businessSegment: 'lanches mto fodaaa',
   organizationRepresentantId: 'mocked_user_id',
@@ -17,14 +17,14 @@ export class OrganizationDataSource implements IOrganizationDataSource {
   async create(payload: Omit<Organization, '_id'>): Promise<Organization> {
     return {
       ...payload,
-      id: MOCKED_ORGANIZATION.id,
+      organizationId: MOCKED_ORGANIZATION.organizationId,
     };
   }
 
   async findById(organizationId: string): Promise<Organization | null> {
     return {
       ...MOCKED_ORGANIZATION,
-      id: organizationId,
+      organizationId,
     };
   }
 
@@ -34,7 +34,7 @@ export class OrganizationDataSource implements IOrganizationDataSource {
   ): Promise<Partial<Organization>> {
     return {
       ...payload,
-      id: organizationId,
+      organizationId,
     };
   }
 }

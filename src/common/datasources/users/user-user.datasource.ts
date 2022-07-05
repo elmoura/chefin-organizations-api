@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { DataSource, Repository } from 'typeorm';
 import { IUser } from '@common/entities/interfaces/user';
-import { User } from '@common/entities/implementations/user.entity';
+import { User } from '@common/entities/user.entity';
 import { DATASOURCE_PROVIDER } from '@src/database/database.module';
 import {
   IUserDataSource,

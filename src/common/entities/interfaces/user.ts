@@ -1,7 +1,7 @@
-import { IBaseEntity } from './base-entity';
+import { ICustomBaseEntity } from './custom-base-entity';
 
-export interface IUser extends IBaseEntity {
-  id: string;
+export interface IUser extends ICustomBaseEntity {
+  userId: string;
 
   organizationId: string;
 

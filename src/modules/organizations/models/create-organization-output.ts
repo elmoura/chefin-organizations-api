@@ -3,7 +3,7 @@ import { IOrganizationLocation } from '@common/entities/interfaces/organization-
 import { CreateUserOutput } from '@modules/users/models/create-user-output';
 
 export class CreateOrganizationOutput implements IOrganization {
-  id: string;
+  organizationId: string;
 
   name: string;
 

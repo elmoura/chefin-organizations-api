@@ -1,15 +1,22 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IUser } from '../interfaces/user';
-import { BaseEntity } from './base-entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { IUser } from './interfaces/user';
+import { CustomBaseEntity } from './custom-base-entity';
 import { Organization } from './organization.entity';
 
 @Entity()
-export class User extends BaseEntity implements IUser {
+export class User extends CustomBaseEntity implements IUser {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  userId: string;
 
   @Column()
   @ManyToOne(() => Organization)
+  @JoinColumn({ name: 'organizationId' })
   organizationId: string;
 
   @Column()

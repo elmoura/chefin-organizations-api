@@ -7,7 +7,7 @@ import {
 import {
   IOrganizationDataSource,
   ORGANIZATION_DATASOURCE_PROVIDER,
-} from '@common/datasources/organizations/types/organization-datasouce.interface';
+} from '@common/datasources/organizations/types/organization-datasource.interface';
 import { CreateUserInput } from '../models/create-user-input';
 import { CreateUserOutput } from '../models/create-user-output';
 

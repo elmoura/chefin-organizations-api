@@ -1,8 +1,8 @@
-import { IBaseEntity } from './base-entity';
+import { ICustomBaseEntity } from './custom-base-entity';
 import { IOrganizationLocation } from './organization-location';
 
-export interface IOrganization extends IBaseEntity {
-  id: string;
+export interface IOrganization extends ICustomBaseEntity {
+  organizationId: string;
 
   name: string;
 
