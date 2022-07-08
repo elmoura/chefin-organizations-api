@@ -8,6 +8,7 @@ import {
   IOrganizationDataSource,
   ORGANIZATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-datasource.interface';
+import { BusinessError } from '@common/errors/business-error';
 import { CreateUserInput } from '../models/create-user-input';
 import { CreateUserOutput } from '../models/create-user-output';
 
@@ -31,13 +32,13 @@ export class CreateUserUseCase
     );
 
     if (!organizationExists) {
-      throw new Error('a organização informada não existe.');
+      throw new BusinessError('a organização informada não existe.', 400);
     }
 
     const userAlreadyExists = await this.userDataSource.findByEmail(email);
 
     if (userAlreadyExists) {
-      throw new Error('já existe um usuário com esse e-mail.');
+      throw new BusinessError('já existe um usuário com esse e-mail.', 400);
     }
 
     const createdUser = await this.userDataSource.createOne(createUserInput);

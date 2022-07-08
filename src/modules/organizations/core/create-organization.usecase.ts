@@ -45,6 +45,8 @@ export class CreateOrganizationUseCase
       organizationPayload
     );
 
+    // adicionar validação pelo nome
+
     const { organizationId } = createdOrganization;
 
     const locations =

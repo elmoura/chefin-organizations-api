@@ -5,6 +5,7 @@ import {
 } from 'aws-lambda';
 import { setupContainer } from '@src/container';
 import { LambdaResponse } from '@common/utils/lambda-response';
+import { jsonBodyParser } from '@common/utils/body-parser';
 import {
   CreateUserUseCase,
   CREATE_USER_USE_CASE_PROVIDER,
@@ -20,7 +21,7 @@ export const handler: APIGatewayProxyHandler = async (
     CREATE_USER_USE_CASE_PROVIDER
   );
 
-  const body: CreateUserInput = JSON.parse(event.body || '{}');
+  const body = jsonBodyParser<CreateUserInput>(event.body);
 
   const createdUser = await createUserUseCase.execute(body);
 
