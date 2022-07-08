@@ -13,18 +13,11 @@ provider:
 
 functions:
   createOrganization:
-    handler: src/modules/organizations/presentation/create-organization-handler.handler
+    handler: src/routes.handler
     events:
       - http:
-          method: POST
-          path: /organizations
-
-  createUser:
-    handler: src/modules/users/presentation/create-user-handler.handler
-    events:
-      - http:
-          method: POST
-          path: /organizations/users
+          method: ANY
+          path: /{proxy+}
 
 custom:
   tscpaths:
