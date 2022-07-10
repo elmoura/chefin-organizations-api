@@ -8,7 +8,7 @@ import {
   ORGANIZATION_LOCATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-location-datasource';
 import { OrganizationLocationDataSource } from '@common/datasources/organizations/organization-location.datasource';
-import { UserDataSource } from './common/datasources/users/user-user.datasource';
+import { UserDataSource } from './common/datasources/users/user.datasource';
 import { OrganizationDataSource } from './common/datasources/organizations/organization.datasource';
 import {
   IOrganizationDataSource,

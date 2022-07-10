@@ -1,7 +1,7 @@
-import { BusinessError } from '@common/errors/business-error';
-import { InternalServerError } from '@common/errors/internal-server-error';
-import { LambdaResponse } from '@common/utils/lambda-response';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { BusinessError } from '@common/errors/business-error';
+import { LambdaResponse } from '@common/utils/lambda-response';
+import { InternalServerError } from '@common/errors/internal-server-error';
 
 interface RequestType {
   event: APIGatewayProxyEvent;
@@ -15,11 +15,11 @@ export const errorHandlerMiddleware = (request: RequestType) => {
     Boolean(request.error) && request.error instanceof BusinessError;
 
   if (isTreatedError) {
-    const appError: BusinessError = request.error;
+    const treatedError: BusinessError = request.error;
 
     request.response = new LambdaResponse(
-      appError.statusCode,
-      appError.response
+      treatedError.statusCode,
+      treatedError.response
     );
 
     return request.response;

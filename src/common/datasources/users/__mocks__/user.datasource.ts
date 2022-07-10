@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { User } from '../../../entities/implementations/user.entity';
+import { User } from '../../../entities/user.entity';
 import {
   IUserDataSource,
   IUserLoginParams,
@@ -7,8 +7,8 @@ import {
 import { MOCKED_ORGANIZATION } from '../../organizations/__mocks__/organization.datasource';
 
 export const MOCKED_USER: User = {
-  id: 'ashusahuasuhas',
-  organizationId: MOCKED_ORGANIZATION.id || 'oi',
+  userId: 'ashusahuasuhas',
+  organizationId: MOCKED_ORGANIZATION.organizationId,
   email: 'yumoto@paidoseufilho.com',
   firstName: 'Gustavo',
   lastName: 'Yumoto',
@@ -26,14 +26,14 @@ export class UserDataSource implements IUserDataSource {
   ): Promise<Partial<User>> {
     return {
       ...payload,
-      id: userId,
+      userId,
     };
   }
 
   async createOne(payload: Omit<User, 'id'>): Promise<User> {
     return {
-    id: MOCKED_USER.id,
       ...payload,
+      userId: MOCKED_USER.userId,
     };
   }
 
@@ -47,7 +47,7 @@ export class UserDataSource implements IUserDataSource {
   async findById(userId: string): Promise<User | null> {
     return {
       ...MOCKED_USER,
-      id: userId,
+      userId,
     };
   }
 
