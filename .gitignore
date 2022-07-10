@@ -2,6 +2,9 @@
 node_modules
 .env
 
+# Tests
+coverage
+
 # Serverless
 .serverless
 .build
