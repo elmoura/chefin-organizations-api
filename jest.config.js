@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { pathsToModuleNameMapper } = require('ts-jest');
+const tsConfig = require('./tsconfig.json');
 
 /*
  * For a detailed explanation regarding each configuration property, visit:
@@ -9,7 +11,7 @@ module.exports = {
   preset: 'ts-jest',
   globals: {
     'ts-jest': {
-      tsconfig: './tsconfig.base.json',
+      tsconfig: './tsconfig.json',
     },
   },
   rootDir: './',
@@ -80,16 +82,12 @@ module.exports = {
   // ],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: [
-    'js',
-    'ts',
-    'json',
-  ],
+  moduleFileExtensions: ['js', 'ts', 'json'],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: pathsToModuleNameMapper(tsConfig.compilerOptions.paths, {
-  //   prefix: '<rootDir>'
-  // }),
+  moduleNameMapper: pathsToModuleNameMapper(tsConfig.compilerOptions.paths, {
+    prefix: '<rootDir>/src',
+  }),
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -154,10 +152,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: [
-    '**/__tests__/**/*.ts?(x)',
-    '**/?(*.)+(spec|test).ts?(x)',
-  ],
+  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

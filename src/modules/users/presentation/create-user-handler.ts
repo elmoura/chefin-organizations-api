@@ -23,6 +23,8 @@ export const handler: APIGatewayProxyHandler = async (
 
   const body = jsonBodyParser<CreateUserInput>(event.body);
 
+  // pega organizationId a partir do "authorization" e acrescenta na chamada do UseCase
+
   const createdUser = await createUserUseCase.execute(body);
 
   return new LambdaResponse(201, createdUser);

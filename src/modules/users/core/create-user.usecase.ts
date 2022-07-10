@@ -8,9 +8,10 @@ import {
   IOrganizationDataSource,
   ORGANIZATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-datasource.interface';
-import { BusinessError } from '@common/errors/business-error';
+import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
 import { CreateUserInput } from '../models/create-user-input';
 import { CreateUserOutput } from '../models/create-user-output';
+import { UserAlreadyExistsError } from './errors/user-already-exists-error';
 
 export const CREATE_USER_USE_CASE_PROVIDER = 'CreateUserUseCase';
 
@@ -19,9 +20,10 @@ export class CreateUserUseCase
   implements IBaseUseCase<CreateUserInput, CreateUserOutput>
 {
   constructor(
+    @inject(USER_DATASOURCE_PROVIDER)
+    public readonly userDataSource: IUserDataSource,
     @inject(ORGANIZATION_DATASOURCE_PROVIDER)
-    private organizationDataSource: IOrganizationDataSource,
-    @inject(USER_DATASOURCE_PROVIDER) private userDataSource: IUserDataSource
+    public readonly organizationDataSource: IOrganizationDataSource
   ) {}
 
   async execute(createUserInput: CreateUserInput): Promise<CreateUserOutput> {
@@ -32,13 +34,13 @@ export class CreateUserUseCase
     );
 
     if (!organizationExists) {
-      throw new BusinessError('a organização informada não existe.', 400);
+      throw new InvalidOrganizationError();
     }
 
     const userAlreadyExists = await this.userDataSource.findByEmail(email);
 
     if (userAlreadyExists) {
-      throw new BusinessError('já existe um usuário com esse e-mail.', 400);
+      throw new UserAlreadyExistsError();
     }
 
     const createdUser = await this.userDataSource.createOne(createUserInput);

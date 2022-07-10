@@ -7,8 +7,9 @@
     "node": "14.x"
   },
   "scripts": {
-    "start:dev": "serverless offline",
     "build": "tsc build",
+    "test": "jest",
+    "start:dev": "serverless offline",
     "typeorm": "typeorm-ts-node-commonjs -d orm-config.ts"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.100",
+    "@types/jest": "^28.1.4",
     "@types/node": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
