@@ -8,6 +8,11 @@ import {
   ORGANIZATION_LOCATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-location-datasource';
 import { OrganizationLocationDataSource } from '@common/datasources/organizations/organization-location.datasource';
+import {
+  CryptoService,
+  CRYPTO_SERVICE_PROVIDER,
+  ICryptoService,
+} from '@common/services/crypto.service';
 import { UserDataSource } from './common/datasources/users/user.datasource';
 import { OrganizationDataSource } from './common/datasources/organizations/organization.datasource';
 import {
@@ -23,6 +28,8 @@ export const setupContainer = async (
   container = new Container()
 ): Promise<Container> => {
   await container.loadAsync(databaseModule);
+
+  container.bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER).to(CryptoService);
 
   container.bind<IUserDataSource>(USER_DATASOURCE_PROVIDER).to(UserDataSource);
 
