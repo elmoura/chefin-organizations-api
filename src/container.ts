@@ -13,6 +13,11 @@ import {
   CRYPTO_SERVICE_PROVIDER,
   ICryptoService,
 } from '@common/services/crypto.service';
+import {
+  ITokenService,
+  JwtService,
+  TOKEN_SERVICE_PROVIDER,
+} from '@common/services/jwt.service';
 import { UserDataSource } from './common/datasources/users/user.datasource';
 import { OrganizationDataSource } from './common/datasources/organizations/organization.datasource';
 import {
@@ -28,6 +33,8 @@ export const setupContainer = async (
   container = new Container()
 ): Promise<Container> => {
   await container.loadAsync(databaseModule);
+
+  container.bind<ITokenService>(TOKEN_SERVICE_PROVIDER).to(JwtService);
 
   container.bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER).to(CryptoService);
 
