@@ -1,21 +1,8 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { injectable } from 'inversify';
 import { configuration } from '@config/vars';
-
-export interface GenerateAuthTokenInput {
-  userId: string;
-  organizationId: string;
-}
-
-type TokenPayload = JwtPayload & GenerateAuthTokenInput;
-
-export const TOKEN_SERVICE_PROVIDER = 'JwtService';
-
-export interface ITokenService {
-  verifyToken(token: string): boolean;
-  decodeToken(token: string): TokenPayload;
-  generateToken(payload: GenerateAuthTokenInput): { accessToken: string };
-}
+import { ITokenService } from './interfaces/token-service';
+import { GenerateTokenInput, TokenPayload } from './dto/token-service';
 
 @injectable()
 export class JwtService implements ITokenService {
@@ -25,10 +12,9 @@ export class JwtService implements ITokenService {
     this.secretKey = configuration.crypto.secretKey;
   }
 
-  verifyToken(token: string): boolean {
-    const isValidToken = jwt.verify(token, this.secretKey);
-    console.log('verifyToken', isValidToken);
-    return true;
+  isValidToken(token: string): boolean {
+    const tokenPayload = jwt.verify(token, this.secretKey);
+    return Boolean(tokenPayload);
   }
 
   decodeToken(token: string): TokenPayload {
@@ -38,7 +24,7 @@ export class JwtService implements ITokenService {
   /**
    * @todo: adicionar tempo de expiração do token
    */
-  generateToken(payload: GenerateAuthTokenInput): { accessToken: string } {
+  generateToken(payload: GenerateTokenInput): { accessToken: string } {
     const accessToken = jwt.sign(payload, this.secretKey);
 
     return { accessToken };
