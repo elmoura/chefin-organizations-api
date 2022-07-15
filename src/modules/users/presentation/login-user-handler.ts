@@ -6,8 +6,8 @@ import {
 import { setupContainer } from '@src/container';
 import { jsonBodyParser } from '@common/utils/body-parser';
 import { LambdaResponse } from '@common/utils/lambda-response';
+import { LoginUserInput } from '../models/login-user-input';
 import {
-  LoginUserInput,
   LoginUserUseCase,
   LOGIN_USER_USE_CASE_PROVIDER,
 } from '../core/login-user.usecase';

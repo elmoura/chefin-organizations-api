@@ -8,16 +8,16 @@ import {
   ORGANIZATION_LOCATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-location-datasource';
 import { OrganizationLocationDataSource } from '@common/datasources/organizations/organization-location.datasource';
-import {
-  CryptoService,
-  CRYPTO_SERVICE_PROVIDER,
-  ICryptoService,
-} from '@common/services/crypto.service';
+import { CryptoService } from '@common/services/crypto.service';
+import { JwtService } from '@common/services/jwt.service';
 import {
   ITokenService,
-  JwtService,
   TOKEN_SERVICE_PROVIDER,
-} from '@common/services/jwt.service';
+} from '@common/services/interfaces/token-service';
+import {
+  ICryptoService,
+  CRYPTO_SERVICE_PROVIDER,
+} from '@common/services/interfaces/crypto-service';
 import { UserDataSource } from './common/datasources/users/user.datasource';
 import { OrganizationDataSource } from './common/datasources/organizations/organization.datasource';
 import {

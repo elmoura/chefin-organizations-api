@@ -1,28 +1,22 @@
 import { inject, injectable } from 'inversify';
 import { IBaseUseCase } from '@common/utils/base-use-case';
 import {
-  ICryptoService,
-  CRYPTO_SERVICE_PROVIDER,
-} from '@common/services/crypto.service';
-import {
   IUserDataSource,
   USER_DATASOURCE_PROVIDER,
 } from '@common/datasources/users/types/user-datasouce.interface';
+
 import {
-  GenerateAuthTokenInput,
   ITokenService,
   TOKEN_SERVICE_PROVIDER,
-} from '@common/services/jwt.service';
+} from '@common/services/interfaces/token-service';
+import {
+  ICryptoService,
+  CRYPTO_SERVICE_PROVIDER,
+} from '@common/services/interfaces/crypto-service';
+import { GenerateTokenInput } from '@common/services/dto/token-service';
 import { InvalidLoginError } from './errors/invalid-login-error';
-
-export interface LoginUserInput {
-  email: string;
-  password: string;
-}
-
-interface LoginUserOutput {
-  accessToken: string;
-}
+import { LoginUserInput } from '../models/login-user-input';
+import { LoginUserOutput } from '../models/login-user.output';
 
 export const LOGIN_USER_USE_CASE_PROVIDER = 'LoginUserUseCase';
 
@@ -49,7 +43,7 @@ export class LoginUserUseCase
       throw new InvalidLoginError();
     }
 
-    const tokenPayload: GenerateAuthTokenInput = {
+    const tokenPayload: GenerateTokenInput = {
       userId: validLoginUser.userId,
       organizationId: validLoginUser.organizationId,
     };
