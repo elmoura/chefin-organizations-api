@@ -9,6 +9,16 @@ import {
   ORGANIZATION_DATASOURCE_PROVIDER,
 } from '@common/datasources/organizations/types/organization-datasource.interface';
 import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
+import {
+  CRYPTO_SERVICE_PROVIDER,
+  ICryptoService,
+} from '@common/services/interfaces/crypto-service';
+import { IUser } from '@common/entities/interfaces/user';
+import {
+  ITokenService,
+  TOKEN_SERVICE_PROVIDER,
+} from '@common/services/interfaces/token-service';
+import { GenerateTokenInput } from '@common/services/dto/token-service';
 import { CreateUserInput } from '../models/create-user-input';
 import { CreateUserOutput } from '../models/create-user-output';
 import { UserAlreadyExistsError } from './errors/user-already-exists-error';
@@ -20,6 +30,10 @@ export class CreateUserUseCase
   implements IBaseUseCase<CreateUserInput, CreateUserOutput>
 {
   constructor(
+    @inject(TOKEN_SERVICE_PROVIDER)
+    public readonly tokenService: ITokenService,
+    @inject(CRYPTO_SERVICE_PROVIDER)
+    private readonly cryptoService: ICryptoService,
     @inject(USER_DATASOURCE_PROVIDER)
     public readonly userDataSource: IUserDataSource,
     @inject(ORGANIZATION_DATASOURCE_PROVIDER)
@@ -27,7 +41,7 @@ export class CreateUserUseCase
   ) {}
 
   async execute(createUserInput: CreateUserInput): Promise<CreateUserOutput> {
-    const { email, organizationId } = createUserInput;
+    const { organizationId, email, password } = createUserInput;
 
     const organizationExists = await this.organizationDataSource.findById(
       organizationId
@@ -43,8 +57,26 @@ export class CreateUserUseCase
       throw new UserAlreadyExistsError();
     }
 
-    const createdUser = await this.userDataSource.createOne(createUserInput);
+    const createdUser = await this.userDataSource.createOne({
+      ...createUserInput,
+      password: this.cryptoService.encrypt(password),
+    });
 
-    return createdUser;
+    const treatedUser: IUser = {
+      ...createdUser,
+      password: undefined!,
+    };
+
+    const tokenPayload: GenerateTokenInput = {
+      userId: createdUser.userId,
+      organizationId: createdUser.organizationId,
+    };
+
+    const { accessToken } = this.tokenService.generateToken(tokenPayload);
+
+    return {
+      auth: { accessToken },
+      ...treatedUser,
+    };
   }
 }

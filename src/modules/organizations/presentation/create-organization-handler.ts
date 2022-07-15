@@ -5,7 +5,6 @@ import {
 } from 'aws-lambda';
 import { setupContainer } from '@src/container';
 import { LambdaResponse } from '@common/utils/lambda-response';
-import { commonMiddleware } from '@common/middlewares/common-middleware';
 import { jsonBodyParser } from '@common/utils/body-parser';
 import {
   CreateOrganizationUseCase,
@@ -14,7 +13,7 @@ import {
 import { CreateOrganizationInput } from '../models/create-organization-input';
 import { CreateOrganizationOutput } from '../models/create-organization-output';
 
-export const createOrganizationHandler: APIGatewayProxyHandler = async (
+export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const dependenciesContainer = await setupContainer();
@@ -30,5 +29,3 @@ export const createOrganizationHandler: APIGatewayProxyHandler = async (
 
   return new LambdaResponse<CreateOrganizationOutput>(201, result);
 };
-
-export const handler = commonMiddleware(createOrganizationHandler);

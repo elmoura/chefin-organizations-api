@@ -1,8 +1,5 @@
 import { Container } from 'inversify';
-import {
-  IOrganizationDataSource,
-  ORGANIZATION_DATASOURCE_PROVIDER,
-} from '@common/datasources/organizations/types/organization-datasource.interface';
+import { ORGANIZATION_DATASOURCE_PROVIDER } from '@common/datasources/organizations/types/organization-datasource.interface';
 import {
   IUserDataSource,
   USER_DATASOURCE_PROVIDER,
@@ -11,6 +8,16 @@ import { UserDataSource } from '@common/datasources/users/user.datasource';
 import { OrganizationDataSource } from '@common/datasources/organizations/organization.datasource';
 import { CreateUserInput } from '@modules/users/models/create-user-input';
 import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
+import {
+  CRYPTO_SERVICE_PROVIDER,
+  ICryptoService,
+} from '@common/services/interfaces/crypto-service';
+import { CryptoService } from '@common/services/crypto.service';
+import {
+  ITokenService,
+  TOKEN_SERVICE_PROVIDER,
+} from '@common/services/interfaces/token-service';
+import { JwtService } from '@common/services/jwt.service';
 import {
   CreateUserUseCase,
   CREATE_USER_USE_CASE_PROVIDER,
@@ -22,13 +29,20 @@ jest.mock('@common/datasources/organizations/organization.datasource');
 
 describe(CreateUserUseCase.name, () => {
   let createUserUseCase: CreateUserUseCase;
-  let userDataSource: IUserDataSource;
-  let organizationDataSource: IOrganizationDataSource;
 
   beforeAll(() => {
     const testContainer = new Container();
 
-    testContainer.bind(USER_DATASOURCE_PROVIDER).to(UserDataSource);
+    testContainer.bind<ITokenService>(TOKEN_SERVICE_PROVIDER).to(JwtService);
+
+    testContainer
+      .bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER)
+      .to(CryptoService);
+
+    testContainer
+      .bind<IUserDataSource>(USER_DATASOURCE_PROVIDER)
+      .to(UserDataSource);
+
     testContainer
       .bind(ORGANIZATION_DATASOURCE_PROVIDER)
       .to(OrganizationDataSource);
@@ -36,11 +50,6 @@ describe(CreateUserUseCase.name, () => {
     testContainer.bind(CREATE_USER_USE_CASE_PROVIDER).to(CreateUserUseCase);
 
     createUserUseCase = testContainer.get(CREATE_USER_USE_CASE_PROVIDER);
-
-    userDataSource = testContainer.get(USER_DATASOURCE_PROVIDER);
-    organizationDataSource = testContainer.get(
-      ORGANIZATION_DATASOURCE_PROVIDER
-    );
   });
 
   const createUserInput: CreateUserInput = {
@@ -61,6 +70,7 @@ describe(CreateUserUseCase.name, () => {
       const result = await createUserUseCase.execute(createUserInput);
 
       expect(result.userId).toBeTruthy();
+      expect(result.auth.accessToken).toBeTruthy();
     });
 
     describe(`throws a ${UserAlreadyExistsError.name} instance`, () => {
@@ -76,6 +86,8 @@ describe(CreateUserUseCase.name, () => {
     });
 
     describe(`throws a ${InvalidOrganizationError.name} instance`, () => {
+      const invalidOrganizationError = new InvalidOrganizationError();
+
       test('when passed organizationId does not exist', async () => {
         jest
           .spyOn(createUserUseCase.organizationDataSource, 'findById')
@@ -85,8 +97,8 @@ describe(CreateUserUseCase.name, () => {
           await createUserUseCase.execute(createUserInput);
         } catch (error) {
           expect(error instanceof InvalidOrganizationError).toEqual(true);
-          expect(error.statusCode).toBe(400);
-          expect(error.message[0]).toBeTruthy();
+          expect(error.statusCode).toBe(invalidOrganizationError.statusCode);
+          expect(error.message).toBe(invalidOrganizationError.message);
         }
       });
     });

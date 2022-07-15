@@ -1,7 +1,8 @@
 /* eslint-disable no-useless-escape */
 import { Container } from 'inversify';
 import 'reflect-metadata';
-import { CryptoService, CRYPTO_SERVICE_PROVIDER } from '../crypto.service';
+import { CryptoService } from '../crypto.service';
+import { CRYPTO_SERVICE_PROVIDER } from '../interfaces/crypto-service';
 
 describe('CryptoService tests', () => {
   let cryptoService: CryptoService;
@@ -14,7 +15,7 @@ describe('CryptoService tests', () => {
     cryptoService = testContainer.get(CRYPTO_SERVICE_PROVIDER);
   });
 
-  test('deve conseguir criptografar e descriptografar um dado mantendo seu valor original', async () => {
+  test('must encrypt and decrypt a string maintaining its original value', async () => {
     const testText = `
     🤡ÅŤÅQŮĘ ĐØ§ PÅĽHÅÇØ§ ĽØĶØ🤡
     AGORA É NOIS QUE MANDA NESSA PORRA ☣☣☣👿

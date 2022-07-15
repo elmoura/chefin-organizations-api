@@ -1,14 +1,7 @@
-/* eslint-disable max-classes-per-file */
 import { injectable } from 'inversify';
 import { createCipheriv, createDecipheriv } from 'crypto';
 import { configuration } from '@config/vars';
-
-export const CRYPTO_SERVICE_PROVIDER = 'CrytoService';
-
-export interface ICryptoService {
-  encrypt(text: string): string;
-  decrypt(params: string): string;
-}
+import { ICryptoService } from './interfaces/crypto-service';
 
 @injectable()
 export class CryptoService implements ICryptoService {
