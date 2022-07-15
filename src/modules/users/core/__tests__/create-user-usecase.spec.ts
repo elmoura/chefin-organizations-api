@@ -11,6 +11,8 @@ import { UserDataSource } from '@common/datasources/users/user.datasource';
 import { OrganizationDataSource } from '@common/datasources/organizations/organization.datasource';
 import { CreateUserInput } from '@modules/users/models/create-user-input';
 import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
+import { CRYPTO_SERVICE_PROVIDER } from '@common/services/interfaces/crypto-service';
+import { CryptoService } from '@common/services/crypto.service';
 import {
   CreateUserUseCase,
   CREATE_USER_USE_CASE_PROVIDER,
@@ -22,13 +24,14 @@ jest.mock('@common/datasources/organizations/organization.datasource');
 
 describe(CreateUserUseCase.name, () => {
   let createUserUseCase: CreateUserUseCase;
-  let userDataSource: IUserDataSource;
-  let organizationDataSource: IOrganizationDataSource;
 
   beforeAll(() => {
     const testContainer = new Container();
 
+    testContainer.bind(CRYPTO_SERVICE_PROVIDER).to(CryptoService);
+
     testContainer.bind(USER_DATASOURCE_PROVIDER).to(UserDataSource);
+
     testContainer
       .bind(ORGANIZATION_DATASOURCE_PROVIDER)
       .to(OrganizationDataSource);
@@ -36,11 +39,6 @@ describe(CreateUserUseCase.name, () => {
     testContainer.bind(CREATE_USER_USE_CASE_PROVIDER).to(CreateUserUseCase);
 
     createUserUseCase = testContainer.get(CREATE_USER_USE_CASE_PROVIDER);
-
-    userDataSource = testContainer.get(USER_DATASOURCE_PROVIDER);
-    organizationDataSource = testContainer.get(
-      ORGANIZATION_DATASOURCE_PROVIDER
-    );
   });
 
   const createUserInput: CreateUserInput = {
@@ -76,6 +74,8 @@ describe(CreateUserUseCase.name, () => {
     });
 
     describe(`throws a ${InvalidOrganizationError.name} instance`, () => {
+      const invalidOrganizationError = new InvalidOrganizationError();
+
       test('when passed organizationId does not exist', async () => {
         jest
           .spyOn(createUserUseCase.organizationDataSource, 'findById')
@@ -85,8 +85,8 @@ describe(CreateUserUseCase.name, () => {
           await createUserUseCase.execute(createUserInput);
         } catch (error) {
           expect(error instanceof InvalidOrganizationError).toEqual(true);
-          expect(error.statusCode).toBe(400);
-          expect(error.message[0]).toBeTruthy();
+          expect(error.statusCode).toBe(invalidOrganizationError.statusCode);
+          expect(error.message).toBe(invalidOrganizationError.message);
         }
       });
     });

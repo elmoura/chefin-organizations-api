@@ -1,7 +1,8 @@
 /* eslint-disable no-useless-escape */
 import { Container } from 'inversify';
 import 'reflect-metadata';
-import { CryptoService, CRYPTO_SERVICE_PROVIDER } from '../crypto.service';
+import { CryptoService } from '../crypto.service';
+import { CRYPTO_SERVICE_PROVIDER } from '../interfaces/crypto-service';
 
 describe('CryptoService tests', () => {
   let cryptoService: CryptoService;
