@@ -1,8 +1,5 @@
 import { Container } from 'inversify';
-import {
-  IOrganizationDataSource,
-  ORGANIZATION_DATASOURCE_PROVIDER,
-} from '@common/datasources/organizations/types/organization-datasource.interface';
+import { ORGANIZATION_DATASOURCE_PROVIDER } from '@common/datasources/organizations/types/organization-datasource.interface';
 import {
   IUserDataSource,
   USER_DATASOURCE_PROVIDER,
@@ -11,8 +8,16 @@ import { UserDataSource } from '@common/datasources/users/user.datasource';
 import { OrganizationDataSource } from '@common/datasources/organizations/organization.datasource';
 import { CreateUserInput } from '@modules/users/models/create-user-input';
 import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
-import { CRYPTO_SERVICE_PROVIDER } from '@common/services/interfaces/crypto-service';
+import {
+  CRYPTO_SERVICE_PROVIDER,
+  ICryptoService,
+} from '@common/services/interfaces/crypto-service';
 import { CryptoService } from '@common/services/crypto.service';
+import {
+  ITokenService,
+  TOKEN_SERVICE_PROVIDER,
+} from '@common/services/interfaces/token-service';
+import { JwtService } from '@common/services/jwt.service';
 import {
   CreateUserUseCase,
   CREATE_USER_USE_CASE_PROVIDER,
@@ -28,9 +33,15 @@ describe(CreateUserUseCase.name, () => {
   beforeAll(() => {
     const testContainer = new Container();
 
-    testContainer.bind(CRYPTO_SERVICE_PROVIDER).to(CryptoService);
+    testContainer.bind<ITokenService>(TOKEN_SERVICE_PROVIDER).to(JwtService);
 
-    testContainer.bind(USER_DATASOURCE_PROVIDER).to(UserDataSource);
+    testContainer
+      .bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER)
+      .to(CryptoService);
+
+    testContainer
+      .bind<IUserDataSource>(USER_DATASOURCE_PROVIDER)
+      .to(UserDataSource);
 
     testContainer
       .bind(ORGANIZATION_DATASOURCE_PROVIDER)
@@ -59,6 +70,7 @@ describe(CreateUserUseCase.name, () => {
       const result = await createUserUseCase.execute(createUserInput);
 
       expect(result.userId).toBeTruthy();
+      expect(result.auth.accessToken).toBeTruthy();
     });
 
     describe(`throws a ${UserAlreadyExistsError.name} instance`, () => {
