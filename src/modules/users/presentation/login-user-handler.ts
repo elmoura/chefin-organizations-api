@@ -9,7 +9,7 @@ import { LambdaResponse } from '@common/utils/lambda-response';
 import { LoginUserInput } from '../models/login-user-input';
 import {
   LoginUserUseCase,
-  LOGIN_USER_USE_CASE_PROVIDER,
+  LOGIN_USER_USE_CASE,
 } from '../core/login-user.usecase';
 
 export const handler: APIGatewayProxyHandler = async (
@@ -17,9 +17,8 @@ export const handler: APIGatewayProxyHandler = async (
 ): Promise<APIGatewayProxyResult> => {
   const dependenciesContainer = await setupContainer();
 
-  const loginUserUseCase = dependenciesContainer.get<LoginUserUseCase>(
-    LOGIN_USER_USE_CASE_PROVIDER
-  );
+  const loginUserUseCase =
+    dependenciesContainer.get<LoginUserUseCase>(LOGIN_USER_USE_CASE);
 
   const requestBody = jsonBodyParser<LoginUserInput>(event.body);
 

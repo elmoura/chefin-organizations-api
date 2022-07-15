@@ -2,32 +2,32 @@ import { inject, injectable } from 'inversify';
 import { IBaseUseCase } from '@common/utils/base-use-case';
 import {
   IUserDataSource,
-  USER_DATASOURCE_PROVIDER,
+  USER_DATASOURCE,
 } from '@common/datasources/users/types/user-datasouce.interface';
 
 import {
   ITokenService,
-  TOKEN_SERVICE_PROVIDER,
+  TOKEN_SERVICE,
 } from '@common/services/interfaces/token-service';
 import {
   ICryptoService,
-  CRYPTO_SERVICE_PROVIDER,
+  CRYPTO_SERVICE,
 } from '@common/services/interfaces/crypto-service';
 import { GenerateTokenInput } from '@common/services/dto/token-service';
 import { InvalidLoginError } from './errors/invalid-login-error';
 import { LoginUserInput } from '../models/login-user-input';
 import { LoginUserOutput } from '../models/login-user.output';
 
-export const LOGIN_USER_USE_CASE_PROVIDER = 'LoginUserUseCase';
+export const LOGIN_USER_USE_CASE = 'LoginUserUseCase';
 
 @injectable()
 export class LoginUserUseCase
   implements IBaseUseCase<LoginUserInput, LoginUserOutput>
 {
   constructor(
-    @inject(TOKEN_SERVICE_PROVIDER) private tokenService: ITokenService,
-    @inject(CRYPTO_SERVICE_PROVIDER) private cryptoService: ICryptoService,
-    @inject(USER_DATASOURCE_PROVIDER) private userDataSource: IUserDataSource
+    @inject(TOKEN_SERVICE) private tokenService: ITokenService,
+    @inject(CRYPTO_SERVICE) private cryptoService: ICryptoService,
+    @inject(USER_DATASOURCE) public readonly userDataSource: IUserDataSource
   ) {}
 
   async execute(payload: LoginUserInput): Promise<LoginUserOutput> {

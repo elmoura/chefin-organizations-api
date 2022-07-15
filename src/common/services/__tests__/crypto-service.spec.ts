@@ -2,7 +2,7 @@
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { CryptoService } from '../crypto.service';
-import { CRYPTO_SERVICE_PROVIDER } from '../interfaces/crypto-service';
+import { CRYPTO_SERVICE } from '../interfaces/crypto-service';
 
 describe('CryptoService tests', () => {
   let cryptoService: CryptoService;
@@ -10,9 +10,9 @@ describe('CryptoService tests', () => {
   beforeAll(() => {
     const testContainer = new Container();
 
-    testContainer.bind(CRYPTO_SERVICE_PROVIDER).to(CryptoService);
+    testContainer.bind(CRYPTO_SERVICE).to(CryptoService);
 
-    cryptoService = testContainer.get(CRYPTO_SERVICE_PROVIDER);
+    cryptoService = testContainer.get(CRYPTO_SERVICE);
   });
 
   test('must encrypt and decrypt a string maintaining its original value', async () => {

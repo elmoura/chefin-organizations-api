@@ -8,7 +8,7 @@ import { LambdaResponse } from '@common/utils/lambda-response';
 import { jsonBodyParser } from '@common/utils/body-parser';
 import {
   CreateUserUseCase,
-  CREATE_USER_USE_CASE_PROVIDER,
+  CREATE_USER_USE_CASE,
 } from '../core/create-user.usecase';
 import { CreateUserInput } from '../models/create-user-input';
 
@@ -18,7 +18,7 @@ export const handler: APIGatewayProxyHandler = async (
   const dependenciesContainer = await setupContainer();
 
   const createUserUseCase = dependenciesContainer.get<CreateUserUseCase>(
-    CREATE_USER_USE_CASE_PROVIDER
+    CREATE_USER_USE_CASE
   );
 
   const body = jsonBodyParser<CreateUserInput>(event.body);

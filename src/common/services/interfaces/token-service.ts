@@ -1,6 +1,6 @@
 import { GenerateTokenInput, TokenPayload } from '../dto/token-service';
 
-export const TOKEN_SERVICE_PROVIDER = 'JwtService';
+export const TOKEN_SERVICE = 'JwtService';
 
 export interface ITokenService {
   isValidToken(token: string): boolean;

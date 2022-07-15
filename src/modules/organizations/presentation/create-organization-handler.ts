@@ -8,7 +8,7 @@ import { LambdaResponse } from '@common/utils/lambda-response';
 import { jsonBodyParser } from '@common/utils/body-parser';
 import {
   CreateOrganizationUseCase,
-  CREATE_ORGANIZATION_USE_CASE_PROVIDER,
+  CREATE_ORGANIZATION_USE_CASE,
 } from '../core/create-organization.usecase';
 import { CreateOrganizationInput } from '../models/create-organization-input';
 import { CreateOrganizationOutput } from '../models/create-organization-output';
@@ -20,7 +20,7 @@ export const handler: APIGatewayProxyHandler = async (
 
   const createOrganizationUseCase =
     dependenciesContainer.get<CreateOrganizationUseCase>(
-      CREATE_ORGANIZATION_USE_CASE_PROVIDER
+      CREATE_ORGANIZATION_USE_CASE
     );
 
   const body = jsonBodyParser<CreateOrganizationInput>(event.body);

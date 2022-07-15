@@ -1,24 +1,21 @@
 import { Container } from 'inversify';
 import {
   IUserDataSource,
-  USER_DATASOURCE_PROVIDER,
+  USER_DATASOURCE,
 } from '@common/datasources/users/types/user-datasouce.interface';
 import { CryptoService } from '@common/services/crypto.service';
 import { UserDataSource } from '@common/datasources/users/user.datasource';
 import {
   ICryptoService,
-  CRYPTO_SERVICE_PROVIDER,
+  CRYPTO_SERVICE,
 } from '@common/services/interfaces/crypto-service';
 import {
   ITokenService,
-  TOKEN_SERVICE_PROVIDER,
+  TOKEN_SERVICE,
 } from '@common/services/interfaces/token-service';
 import { JwtService } from '@common/services/jwt.service';
 import { LoginUserInput } from '@modules/users/models/login-user-input';
-import {
-  LoginUserUseCase,
-  LOGIN_USER_USE_CASE_PROVIDER,
-} from '../login-user.usecase';
+import { LoginUserUseCase, LOGIN_USER_USE_CASE } from '../login-user.usecase';
 import { InvalidLoginError } from '../errors/invalid-login-error';
 
 jest.mock('@common/datasources/users/user.datasource');
@@ -30,20 +27,16 @@ describe('Login user use case', () => {
   beforeAll(() => {
     const testContainer = new Container();
 
-    testContainer.bind<ITokenService>(TOKEN_SERVICE_PROVIDER).to(JwtService);
+    testContainer.bind<ITokenService>(TOKEN_SERVICE).to(JwtService);
 
-    testContainer
-      .bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER)
-      .to(CryptoService);
+    testContainer.bind<ICryptoService>(CRYPTO_SERVICE).to(CryptoService);
 
-    testContainer
-      .bind<IUserDataSource>(USER_DATASOURCE_PROVIDER)
-      .to(UserDataSource);
+    testContainer.bind<IUserDataSource>(USER_DATASOURCE).to(UserDataSource);
 
-    testContainer.bind(LOGIN_USER_USE_CASE_PROVIDER).to(LoginUserUseCase);
+    testContainer.bind(LOGIN_USER_USE_CASE).to(LoginUserUseCase);
 
-    userDataSource = testContainer.get(USER_DATASOURCE_PROVIDER);
-    loginUserUseCase = testContainer.get(LOGIN_USER_USE_CASE_PROVIDER);
+    userDataSource = testContainer.get(USER_DATASOURCE);
+    loginUserUseCase = testContainer.get(LOGIN_USER_USE_CASE);
   });
 
   const loginUserInput: LoginUserInput = {
@@ -62,7 +55,7 @@ describe('Login user use case', () => {
 
     test('when the email and password dont match any user', async () => {
       jest
-        .spyOn(userDataSource, 'findByEmailAndPassword')
+        .spyOn(loginUserUseCase.userDataSource, 'findByEmailAndPassword')
         .mockImplementationOnce(async () => null);
 
       try {

@@ -16,4 +16,4 @@ export interface IOrganizationDataSource {
   ): Promise<Partial<Organization>>;
 }
 
-export const ORGANIZATION_DATASOURCE_PROVIDER = 'OrganizationDataSource';
+export const ORGANIZATION_DATASOURCE = 'OrganizationDataSource';

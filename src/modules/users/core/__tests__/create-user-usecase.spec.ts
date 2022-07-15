@@ -1,26 +1,26 @@
 import { Container } from 'inversify';
-import { ORGANIZATION_DATASOURCE_PROVIDER } from '@common/datasources/organizations/types/organization-datasource.interface';
+import { ORGANIZATION_DATASOURCE } from '@common/datasources/organizations/types/organization-datasource.interface';
 import {
   IUserDataSource,
-  USER_DATASOURCE_PROVIDER,
+  USER_DATASOURCE,
 } from '@common/datasources/users/types/user-datasouce.interface';
 import { UserDataSource } from '@common/datasources/users/user.datasource';
 import { OrganizationDataSource } from '@common/datasources/organizations/organization.datasource';
 import { CreateUserInput } from '@modules/users/models/create-user-input';
 import { InvalidOrganizationError } from '@common/errors/invalid-organization-error';
 import {
-  CRYPTO_SERVICE_PROVIDER,
+  CRYPTO_SERVICE,
   ICryptoService,
 } from '@common/services/interfaces/crypto-service';
 import { CryptoService } from '@common/services/crypto.service';
 import {
   ITokenService,
-  TOKEN_SERVICE_PROVIDER,
+  TOKEN_SERVICE,
 } from '@common/services/interfaces/token-service';
 import { JwtService } from '@common/services/jwt.service';
 import {
   CreateUserUseCase,
-  CREATE_USER_USE_CASE_PROVIDER,
+  CREATE_USER_USE_CASE,
 } from '../create-user.usecase';
 import { UserAlreadyExistsError } from '../errors/user-already-exists-error';
 
@@ -33,23 +33,17 @@ describe(CreateUserUseCase.name, () => {
   beforeAll(() => {
     const testContainer = new Container();
 
-    testContainer.bind<ITokenService>(TOKEN_SERVICE_PROVIDER).to(JwtService);
+    testContainer.bind<ITokenService>(TOKEN_SERVICE).to(JwtService);
 
-    testContainer
-      .bind<ICryptoService>(CRYPTO_SERVICE_PROVIDER)
-      .to(CryptoService);
+    testContainer.bind<ICryptoService>(CRYPTO_SERVICE).to(CryptoService);
 
-    testContainer
-      .bind<IUserDataSource>(USER_DATASOURCE_PROVIDER)
-      .to(UserDataSource);
+    testContainer.bind<IUserDataSource>(USER_DATASOURCE).to(UserDataSource);
 
-    testContainer
-      .bind(ORGANIZATION_DATASOURCE_PROVIDER)
-      .to(OrganizationDataSource);
+    testContainer.bind(ORGANIZATION_DATASOURCE).to(OrganizationDataSource);
 
-    testContainer.bind(CREATE_USER_USE_CASE_PROVIDER).to(CreateUserUseCase);
+    testContainer.bind(CREATE_USER_USE_CASE).to(CreateUserUseCase);
 
-    createUserUseCase = testContainer.get(CREATE_USER_USE_CASE_PROVIDER);
+    createUserUseCase = testContainer.get(CREATE_USER_USE_CASE);
   });
 
   const createUserInput: CreateUserInput = {

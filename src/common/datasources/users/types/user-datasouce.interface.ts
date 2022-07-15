@@ -16,4 +16,4 @@ export interface IUserDataSource {
   updateOne(userId: string, payload: Partial<User>): Promise<Partial<User>>;
 }
 
-export const USER_DATASOURCE_PROVIDER = 'UserDataSource';
+export const USER_DATASOURCE = 'UserDataSource';
