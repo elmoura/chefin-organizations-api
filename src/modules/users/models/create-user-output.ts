@@ -1,6 +1,6 @@
 import { IUser } from '@common/entities/interfaces/user';
 
-export class CreateUserOutput implements IUser {
+export class CreateUserOutput implements Omit<IUser, 'password'> {
   userId: string;
 
   organizationId: string;
@@ -12,8 +12,6 @@ export class CreateUserOutput implements IUser {
   email: string;
 
   phoneNumber: string;
-
-  password: string;
 
   createdAt: Date;
 
